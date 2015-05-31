@@ -1,24 +1,14 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package cellularland1;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -27,36 +17,38 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 
 /**
+ * FXML controller of the XML document, contains the objects
+ * injected by FXML and all the listeners to events by usage of active
+ * controls in GUI.
  *
- * @author Deas
+ * @author Jakub Sosnovec
  */
 public class FXMLDocumentController implements Initializable {
     
+    /** Main container. */
     @FXML
     private GridPane grid;
-    
+    /** Choice box with selection of difficulty. */
     @FXML
     private ChoiceBox obtiznostChoiceBox;
-    
-    @FXML
-    private Button statistikyButton;
-    
-    @FXML
-    private Button napovedaButton;
-    
+    /** TableColumns contained in TableView tabulka, that are used in the
+     statistics window.*/
     @FXML
     private TableColumn columnHrac, columnSkore, columnDatum;
-    
+    /** TableView that contains TableColumns, for view the statistics. */
     @FXML
     private TableView tabulka;
-    
+    /** Progress bar with the current state of mana. It cannot be clicked. */
     @FXML
     private ProgressBar mana;
-    
+    /** TextArea with the text of help. */
     @FXML
     private TextArea napoveda;
-    
+    /** Controller of the grid with main board. */
     private GridController gridController;
+    
+    /** Initializer, the objects don't have to be defined, they are injected 
+     from the FXML document.*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         gridController = new GridController(grid);
@@ -66,19 +58,23 @@ public class FXMLDocumentController implements Initializable {
         
         tabulka.setEditable(true);
 
-        columnHrac.setCellValueFactory(new PropertyValueFactory<StatisticsRecord, String>("name"));
-        columnSkore.setCellValueFactory(new PropertyValueFactory<StatisticsRecord, String>("score"));
-        columnDatum.setCellValueFactory(new PropertyValueFactory<StatisticsRecord, String>("date"));
+        columnHrac.setCellValueFactory(new PropertyValueFactory<>("name"));
+        columnSkore.setCellValueFactory(new PropertyValueFactory<>("score"));
+        columnDatum.setCellValueFactory(new PropertyValueFactory<>("date"));
 
         tabulka.setItems(FXCollections.observableArrayList(new StatisticsRecord("Matfyzak01","42","3.14.1592")));
         tabulka.setVisible(false);
         
         napoveda.setVisible(false);
+        napoveda.setWrapText(true);
+        napoveda.setEditable(false);     
+        napoveda.setText(NapovedaText.text);
         
         mana.setProgress(0.6);
 
     }    
     
+    /** The listener to pushing the statistics button. Only switches the windows. */
     public void statistikyButtonAction(ActionEvent e) {
         if(grid.isVisible() || napoveda.isVisible()) {
             grid.setVisible(false);
@@ -91,6 +87,7 @@ public class FXMLDocumentController implements Initializable {
         }      
     }
     
+    /** The listener to pushing the help button. Only switches the windows. */
     public void napovedaButtonAction(ActionEvent e) {
         if(grid.isVisible() || tabulka.isVisible()) {
             grid.setVisible(false);
@@ -101,5 +98,35 @@ public class FXMLDocumentController implements Initializable {
             tabulka.setVisible(false);
             grid.setVisible(true);
         }           
+    }
+    
+    /** The listener to pushing the button "Spustit hru". */
+    public void spustitHruButtonAction(ActionEvent e) {
+        
+    }
+        
+    /** The listener to pushing the button "Konec kola". */
+    public void konecKolaButtonAction(ActionEvent e) {
+        
+    }
+        
+    /** The listener to pushing the button "Konec hry". */
+    public void konecHryButtonAction(ActionEvent e) {
+        
+    }
+        
+    /** The listener to pushing the button "Zastav automat". */
+    public void zastavAutomatButtonAction(ActionEvent e) {
+        
+    }
+        
+    /** The listener to pushing the button "Restart automatu". */
+    public void restartAutomatuButtonAction(ActionEvent e) {
+        
+    }
+    
+    /** The listener to pushing the button "Hotovo!. */
+    public void hotovoButtonAction(ActionEvent e) {
+        
     }
 }

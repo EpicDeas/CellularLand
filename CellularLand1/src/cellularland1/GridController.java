@@ -5,41 +5,45 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
+ * The controller of the grid with the main board. It controls the actions
+ * taken after clicking on a button in the board and provides an interface 
+ * for access to the specific nodes.
  *
- * @author Deas
+ * @author Jakub Sosnovec
  */
 public class GridController {
+    /** The container of all the nodes. */
     private final GridPane grid;
-    private final Button[][] buttons;
+    /** The array with all the nodes that are children in the grid.
+     first index is row, second index is column.*/
+    private final ButtonNode[][] buttons;
+    /** Number of row and columns. Currently the board has to have square 
+     shape, maybe it will be changed to rectangular later.*/
     private final int size;
     
+    /** Constructor that initializes the gird. It adds the array buttons as
+     children of the grid container. At first, all the nodes are hidden yet.*/
     public GridController(GridPane grid) {
         this.grid = grid;
         this.size = grid.getColumnConstraints().size();
-        this.buttons = new Button[size][];
+        this.buttons = new ButtonNode[size][];
         
         for(int i = 0; i < size; i++) {
-            buttons[i] = new Button[size];
+            buttons[i] = new ButtonNode[size];
             for(int j = 0; j < size; j++) {
-                buttons[i][j] = new Button();         
+                buttons[i][j] = new ButtonNode(new Button());         
                 
-                GridPane.setRowIndex(buttons[i][j], i);
-                GridPane.setColumnIndex(buttons[i][j], j);
-                grid.getChildren().add(buttons[i][j]);
+                GridPane.setRowIndex(buttons[i][j].getButton(), i);
+                GridPane.setColumnIndex(buttons[i][j].getButton(), j);
+                grid.getChildren().add(buttons[i][j].getButton());
                 
-                buttons[i][j].setVisible(true);
-                buttons[i][j].getStyleClass().remove("button");
-                buttons[i][j].getStyleClass().add("gridbutton");
+                buttons[i][j].getButton().setVisible(true);
+                buttons[i][j].getButton().getStyleClass().remove("button");
+                buttons[i][j].getButton().getStyleClass().add("gridbutton");
                 
                 // Temporary solution to get the pictures:
-                buttons[i][j].setOnAction(event -> { 
+                buttons[i][j].getButton().setOnAction(event -> { 
                     if(((Button)(event.getSource())).getStyleClass().contains("gridbutton")) {
                         ((Button)(event.getSource())).getStyleClass().remove("gridbutton");
                         ((Button)(event.getSource())).getStyleClass().add("gridbuttonpressed");
@@ -55,8 +59,10 @@ public class GridController {
         
     }
     
+    /** The getter of grid. Currently is public. */
     public GridPane getGrid() { return grid; }
     
+    /** Gets the node with specified coordinates. */
     public Node getNode(final int row, final int column) {
         Node result = null;
         ObservableList<Node> childrens = grid.getChildren();

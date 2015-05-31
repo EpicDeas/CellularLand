@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package cellularland1;
 
 import javafx.application.Application;
@@ -12,8 +8,10 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 /**
+ * Entry point of the application. 
+ * Only initializes the stage and sets title.
  *
- * @author Deas
+ * @author Jakub Sosnovec
  */
 public class CellularLand1 extends Application {
     
@@ -29,6 +27,7 @@ public class CellularLand1 extends Application {
     }
 
     /**
+     * Main function, just for launching the application.
      * @param args the command line arguments
      */
     public static void main(String[] args) {

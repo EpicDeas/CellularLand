@@ -1,15 +1,12 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package cellularland1;
 
 import javafx.beans.property.SimpleStringProperty;
 
 /**
+ * The encapsulation of 
  *
- * @author Deas
+ * @author Jakub Sosnovec
  */
 public class StatisticsRecord {
     private final SimpleStringProperty nameProperty;
