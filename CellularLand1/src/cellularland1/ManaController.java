@@ -15,7 +15,7 @@ import javafx.scene.control.ProgressBar;
  *
  * @author Deas
  */
-public class ManaController {
+public final class ManaController {
     // SOME CONSTANTS:
     /** How many distinct states my mana bar can have. */
     private static final Integer Capacity = 1000;
@@ -31,7 +31,7 @@ public class ManaController {
     private final Timeline timelineProgress;
     
     private final ProgressBar pb;
-    private final IntegerProperty points = new SimpleIntegerProperty(0);
+    private final IntegerProperty points = new SimpleIntegerProperty(Capacity);
     
     private boolean stopped = false;
     public boolean isStopped() { return stopped; }
@@ -42,9 +42,8 @@ public class ManaController {
         
         pb.progressProperty().bind(points.divide(Capacity*1.0));
                 
-        timelineProgress.getKeyFrames().add(
-            new KeyFrame(Duration.seconds(Speed), new KeyValue(points,Capacity)));
-        timelineProgress.playFromStart();
+        timelineProgress.getKeyFrames().add(new KeyFrame(Duration.ZERO));
+        recalibrate(1,1);
     }
     
     private void reset() {

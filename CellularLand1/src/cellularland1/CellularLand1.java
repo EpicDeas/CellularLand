@@ -23,6 +23,8 @@ public class CellularLand1 extends Application {
         
         stage.setScene(scene);
         stage.setTitle("Cellular land game");
+        stage.setMinWidth(1003);
+        stage.setMinHeight(683);
         stage.show();
     }
 

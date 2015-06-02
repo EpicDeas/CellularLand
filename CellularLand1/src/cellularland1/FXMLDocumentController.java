@@ -115,6 +115,7 @@ public class FXMLDocumentController implements Initializable {
     /** The listener to pushing the button "Spustit hru". */
     public void spustitHruButtonAction(ActionEvent e) {
         digitalClock.start();
+        //TODO: Call mechanics, make mana full
     }
         
     /** The listener to pushing the button "Konec kola". */

@@ -50,6 +50,12 @@ public class GridController {
                 buttons[i][j].getButton().getStyleClass().add("gridbutton");
                 buttons[i][j].getButton().setId(i + "," + j);
                 
+                buttons[i][j].getButton().minHeightProperty().bind(grid.heightProperty().divide(size*1.0).subtract(4));
+                buttons[i][j].getButton().maxHeightProperty().bind(grid.heightProperty().divide(size*1.0).subtract(4));
+                
+                buttons[i][j].getButton().minWidthProperty().bind(grid.widthProperty().divide(size*1.0).subtract(4));
+                buttons[i][j].getButton().maxWidthProperty().bind(grid.widthProperty().divide(size*1.0).subtract(4));
+                
                 // Temporary solution to get the pictures:
                 buttons[i][j].getButton().setOnAction(event -> { 
                     // first I will check if there is enough mana to click the button
