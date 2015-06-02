@@ -15,19 +15,26 @@ import javafx.scene.layout.GridPane;
 public class GridController {
     /** The container of all the nodes. */
     private final GridPane grid;
+    
     /** The array with all the nodes that are children in the grid.
      first index is row, second index is column.*/
     private final ButtonNode[][] buttons;
+    
     /** Number of row and columns. Currently the board has to have square 
      shape, maybe it will be changed to rectangular later.*/
     private final int size;
     
+    /** Mana controller. I need this instance to properly set the listeners
+      to clicking the buttons. */
+    private final ManaController manaController;
+    
     /** Constructor that initializes the gird. It adds the array buttons as
      children of the grid container. At first, all the nodes are hidden yet.*/
-    public GridController(GridPane grid) {
+    public GridController(GridPane grid, ManaController mc) {
         this.grid = grid;
         this.size = grid.getColumnConstraints().size();
         this.buttons = new ButtonNode[size][];
+        this.manaController = mc;
         
         for(int i = 0; i < size; i++) {
             buttons[i] = new ButtonNode[size];
@@ -57,7 +64,7 @@ public class GridController {
             }
         }
         
-    }
+    }  
     
     /** The getter of grid. Currently is public. */
     public GridPane getGrid() { return grid; }

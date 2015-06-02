@@ -87,7 +87,7 @@
             <Label layoutX="87.0" layoutY="146.0" styleClass="label-slash" text="Obtížnost:" />
             <Separator layoutX="11.0" layoutY="222.0" prefHeight="0.0" prefWidth="239.0" />
             <Button layoutX="76.0" layoutY="370.0" mnemonicParsing="false" onAction="#restartAutomatuButtonAction" prefHeight="40.0" prefWidth="161.0" text="Restart automatu" />
-            <Button layoutX="76.0" layoutY="317.0" mnemonicParsing="false" onAction="#zastavCasButtonAction" prefHeight="40.0" prefWidth="161.0" text="Zastav čas" />
+            <Button layoutX="76.0" layoutY="317.0" mnemonicParsing="false" onAction="#zastavAutomatButtonAction" prefHeight="40.0" prefWidth="161.0" text="Zastav automat" />
             <Separator layoutX="9.0" layoutY="486.0" prefHeight="0.0" prefWidth="239.0" />
             <TextField layoutX="21.0" layoutY="519.0" prefHeight="37.0" prefWidth="100.0" promptText="S" />
             <TextField layoutX="140.0" layoutY="519.0" prefHeight="37.0" prefWidth="100.0" promptText="B" />
@@ -98,6 +98,11 @@
                   <Glow />
                </effect>
             </ProgressBar>
+            <Label fx:id="watch" layoutX="87.0" layoutY="246.0" prefHeight="47.0" prefWidth="119.0" styleClass="label-bright" text="0:00">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
          </children></AnchorPane>
   </items>
 </SplitPane>

@@ -3,11 +3,11 @@ package cellularland1;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TableColumn;
@@ -15,6 +15,7 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.control.Label;
 
 /**
  * FXML controller of the XML document, contains the objects
@@ -45,13 +46,24 @@ public class FXMLDocumentController implements Initializable {
     @FXML
     private TextArea napoveda;
     /** Controller of the grid with main board. */
+    @FXML
     private GridController gridController;
+    /** The label where time is displayed. */
+    @FXML
+    private Label watch;
     
+    /** The class that serves as interface to the watch. */
+    private DigitalClock digitalClock;
+    /** The class that serves as interface to mana bar. */
+    private ManaController manaController;
+
     /** Initializer, the objects don't have to be defined, they are injected 
      from the FXML document.*/
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        gridController = new GridController(grid);
+        manaController = new ManaController(mana);
+
+        gridController = new GridController(grid,manaController);
         
         obtiznostChoiceBox.setItems(FXCollections.observableArrayList("Snadná", "Střední", "Těžká", "Nightmare"));
         obtiznostChoiceBox.setValue("Střední");
@@ -70,8 +82,8 @@ public class FXMLDocumentController implements Initializable {
         napoveda.setEditable(false);     
         napoveda.setText(NapovedaText.text);
         
-        mana.setProgress(0.6);
 
+        digitalClock = new DigitalClock(watch);
     }    
     
     /** The listener to pushing the statistics button. Only switches the windows. */
@@ -102,31 +114,34 @@ public class FXMLDocumentController implements Initializable {
     
     /** The listener to pushing the button "Spustit hru". */
     public void spustitHruButtonAction(ActionEvent e) {
-        
+        digitalClock.start();
     }
         
     /** The listener to pushing the button "Konec kola". */
     public void konecKolaButtonAction(ActionEvent e) {
-        
+        digitalClock.stop();
     }
         
     /** The listener to pushing the button "Konec hry". */
     public void konecHryButtonAction(ActionEvent e) {
-        
+        Platform.exit();
     }
         
     /** The listener to pushing the button "Zastav automat". */
     public void zastavAutomatButtonAction(ActionEvent e) {
-        
+        manaController.stopAuto();
+        // TODO : call mechanics
     }
         
     /** The listener to pushing the button "Restart automatu". */
     public void restartAutomatuButtonAction(ActionEvent e) {
-        
+        if(manaController.restartAuto()) {
+            // TODO : call mechanics
+        }
     }
     
     /** The listener to pushing the button "Hotovo!. */
     public void hotovoButtonAction(ActionEvent e) {
-        
+        digitalClock.stop();
     }
 }
