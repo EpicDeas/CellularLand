@@ -230,15 +230,14 @@
     -fx-background-color: linear-gradient(to left, transparent, -fx-accent);
 }
 .progress-bar > .track {
-      -fx-background-color: 
-          -fx-shadow-highlight-color,
+/*      -fx-background-color: 
           linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
           linear-gradient(to bottom, 
             derive(#83E9D5, -20%),
             derive(#83E9D5, 0%),
             derive(#83E9D5, -25%),
             derive(#83E9D5, -40%)
-          );
+          );*/
     -fx-background-insets: 0, 0 0 1 0, 1 1 2 1;
     -fx-background-radius: 4, 3, 2; /* 10, 9, 8 */
 }

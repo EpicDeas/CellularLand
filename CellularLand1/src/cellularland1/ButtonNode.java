@@ -20,6 +20,49 @@ public class ButtonNode {
         state = State.HIDDEN_DEAD;
     }
     
+    public void clicked(boolean autoStopped) {
+        if(!autoStopped) {
+            switch(state) {
+                case HIDDEN_ALIVE: 
+                    state = State.REVEALED_ALIVE;;
+                    break;
+                case HIDDEN_DEAD:
+                    state = State.REVEALED_DEAD;
+                    break;
+                default: return;
+            }
+            update();
+        } else {
+            switch(state) {
+                case HIDDEN_ALIVE: 
+                    state = State.REVEALED_ALIVE;;
+                    break;
+                case HIDDEN_DEAD:
+                    state = State.REVEALED_DEAD;
+                    break;
+                case REVEALED_ALIVE:
+                    state = State.REVEALED_DEAD;
+                    break;
+                case REVEALED_DEAD:
+                    state = State.REVEALED_ALIVE;
+                    break;
+                default: return;
+            }
+            update();
+        }
+    }
+    
+    private void update() {
+        switch(state) {              
+            case REVEALED_ALIVE:
+                button.setStyle("-fx-background-color: limegreen");
+                break;
+            case REVEALED_DEAD:
+                button.setStyle("-fx-background-color: #c1c1c1");
+                break;
+        }
+    }
+    
     public boolean isAlive() {
         return state == State.HIDDEN_ALIVE || state == State.REVEALED_ALIVE;
     }

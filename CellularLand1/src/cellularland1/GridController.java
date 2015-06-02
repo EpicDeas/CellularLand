@@ -48,16 +48,19 @@ public class GridController {
                 buttons[i][j].getButton().setVisible(true);
                 buttons[i][j].getButton().getStyleClass().remove("button");
                 buttons[i][j].getButton().getStyleClass().add("gridbutton");
+                buttons[i][j].getButton().setId(i + "," + j);
                 
                 // Temporary solution to get the pictures:
                 buttons[i][j].getButton().setOnAction(event -> { 
-                    if(((Button)(event.getSource())).getStyleClass().contains("gridbutton")) {
-                        ((Button)(event.getSource())).getStyleClass().remove("gridbutton");
-                        ((Button)(event.getSource())).getStyleClass().add("gridbuttonpressed");
-                    } else {
-                        ((Button)(event.getSource())).getStyleClass().remove("gridbuttonpressed");
-                        ((Button)(event.getSource())).getStyleClass().add("gridbuttonalive");
-                    }
+                    // first I will check if there is enough mana to click the button
+                    // if not, nothing happens, if yea, i switch the button
+                    // I also need to notify the mechanics of this
+                    // problem: how to notify mechanics when stopping the automaton ends?
+                    // do I need to? I don't. Just send it what happened (i.e a button was
+                    // made alive, or discovered and the mechanics will just accept that
+                    Button b = (Button)event.getSource();
+                    String[] indices = b.getId().split(",");
+                    manaController.cellClick(buttons[Integer.parseInt(indices[0])][Integer.parseInt(indices[1])]);
                 });
                 
                 grid.setVisible(true);
