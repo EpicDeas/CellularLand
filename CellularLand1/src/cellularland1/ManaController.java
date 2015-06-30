@@ -1,14 +1,12 @@
 
 package cellularland1;
 
-import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.util.Duration;
-import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 
 /**
@@ -46,7 +44,7 @@ public final class ManaController {
         recalibrate(1,1);
     }
     
-    private void reset() {
+    public void reset() {
         points.set(0);
         recalibrate(1,0);
     }
@@ -67,7 +65,9 @@ public final class ManaController {
         if(points.get() != 0 || stopped != true) {
             throw new IllegalArgumentException();
         }
-        stopAuto();
+        timelineMain.play();
+        FXMLDocumentController.status = FXMLDocumentController.Status.RUNNING;
+        stopAuto(null);
     }
     
     /** Cell was clicked - check if mana is sufficient, what to do and does it.
@@ -110,7 +110,7 @@ public final class ManaController {
     /** Used when player stops the automaton, reverses the flow of mana with
      * specified speed.
      */
-    public void stopAuto() {
+    public void stopAuto(Timeline timelineMain) {
         double fullness = points.divide(Capacity*1.0).get();
         
         if(stopped == false) {
@@ -119,7 +119,9 @@ public final class ManaController {
             recalibrate(1,fullness);
         }
         stopped = stopped == false;
+        this.timelineMain = timelineMain;
     }
+    private Timeline timelineMain;
     
     /** Recalibrates the timeline so that the progress bar runs with the same
      * speed as before changing the value of points.
@@ -140,5 +142,9 @@ public final class ManaController {
             timelineProgress.setOnFinished(null);
             timelineProgress.playFromStart();
         }
+    }
+    
+    public void stop() {
+        timelineProgress.stop();
     }
 }

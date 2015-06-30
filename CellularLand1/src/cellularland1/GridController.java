@@ -1,9 +1,14 @@
 package cellularland1;
 
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.animation.Timeline;
+import javafx.util.Duration;
+
 
 /**
  * The controller of the grid with the main board. It controls the actions
@@ -28,6 +33,13 @@ public class GridController {
       to clicking the buttons. */
     private final ManaController manaController;
     
+    /** Timeline to periodically refresh the board according to game mechanics
+     */
+    private Timeline timeline;
+    public Timeline getTimeline() { return timeline; }
+    private int difficulty;
+    public int getDifficulty() { return difficulty; }
+    
     /** Constructor that initializes the gird. It adds the array buttons as
      children of the grid container. At first, all the nodes are hidden yet.*/
     public GridController(GridPane grid, ManaController mc) {
@@ -35,6 +47,8 @@ public class GridController {
         this.size = grid.getColumnConstraints().size();
         this.buttons = new ButtonNode[size][];
         this.manaController = mc;
+        this.timeline = new Timeline();
+        this.difficulty = 2;
         
         for(int i = 0; i < size; i++) {
             buttons[i] = new ButtonNode[size];
@@ -89,5 +103,36 @@ public class GridController {
             }
         }
         return result;
+    }
+    
+    public int getSize() {
+        return size;
+    }
+    
+    public void start() {
+        timeline = new Timeline(new KeyFrame(
+                Duration.millis((4-difficulty)*500),
+                ae -> {
+                    Mechanics.inst.step(buttons);
+                }));
+        
+        Mechanics.inst.step(buttons);
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.playFromStart();
+    }
+    public void stop() {
+        timeline.stop();
+    }
+    
+    public void resume() {
+        timeline.play();
+    }
+    
+    public void setDifficulty(int difficulty) {
+        this.difficulty = difficulty;
+    }
+    
+    public boolean isRunning() {
+        return timeline.getStatus() == Animation.Status.RUNNING;
     }
 }

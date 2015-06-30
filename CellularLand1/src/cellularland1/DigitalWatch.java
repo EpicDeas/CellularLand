@@ -60,4 +60,11 @@ final class DigitalClock {
     public void stop() {
         timeline.stop();
     }
+    public boolean isRunning() {
+        return timeline.getStatus() == Animation.Status.RUNNING; 
+    }
+    
+    public int getTotalSeconds() {
+        return minutes * 60 + seconds;
+    }
 }

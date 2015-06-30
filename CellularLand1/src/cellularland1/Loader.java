@@ -1,0 +1,54 @@
+
+package cellularland1;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.ArrayList;
+import javafx.application.Platform;
+
+/**
+ *
+ * @author Deas
+ */
+public class Loader {
+    private FileReader fr;
+    
+    public Loader(String filename) {
+        try {
+            fr = new FileReader(filename);
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
+        }
+    }
+    
+    public CAutomaton load(int size) {
+        try {
+            boolean[][] boolGrid = new boolean[size][size];
+            BufferedReader br = new BufferedReader(fr);
+            
+            String tokens[] = br.readLine().split("/");
+            ArrayList<Integer> B = new ArrayList<>();
+            ArrayList<Integer> S = new ArrayList<>();
+            tokens[0].chars().forEach(ch -> S.add(Character.getNumericValue(ch)));
+            tokens[1].chars().forEach(ch -> B.add(Character.getNumericValue(ch)));
+            
+            String line = br.readLine();
+            int offset = (size - line.length()) / 2;
+            int i = offset;
+            
+            while(line != null) {
+                for(int j = offset; j < line.length() + offset; j++) {
+                    boolGrid[i][j] = (line.charAt(j - offset) == 'a');
+                }
+                i++;
+                line = br.readLine();
+            }
+            return new CAutomaton(boolGrid,S,B);
+            
+        } catch (Exception e) {
+            System.out.println("I/O error.");
+            Platform.exit();
+            return null;
+        }
+    }
+}
