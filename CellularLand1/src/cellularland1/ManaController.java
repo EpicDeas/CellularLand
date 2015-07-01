@@ -63,9 +63,12 @@ public final class ManaController {
     
     private void emptyMana() {
         if(points.get() != 0 || stopped != true) {
-            throw new IllegalArgumentException();
+            return;
         }
-        timelineMain.play();
+        
+        Mechanics.inst.step();
+        timelineMain.playFromStart();
+        
         FXMLDocumentController.status = FXMLDocumentController.Status.RUNNING;
         stopAuto(null);
     }

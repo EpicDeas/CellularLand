@@ -49,7 +49,9 @@ public class GridController {
         this.manaController = mc;
         this.timeline = new Timeline();
         this.difficulty = 2;
-        
+                
+        Mechanics.inst.setButtons(buttons);
+ 
         for(int i = 0; i < size; i++) {
             buttons[i] = new ButtonNode[size];
             for(int j = 0; j < size; j++) {
@@ -113,10 +115,10 @@ public class GridController {
         timeline = new Timeline(new KeyFrame(
                 Duration.millis((4-difficulty)*500),
                 ae -> {
-                    Mechanics.inst.step(buttons);
+                    Mechanics.inst.step();
                 }));
         
-        Mechanics.inst.step(buttons);
+        Mechanics.inst.step();
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
     }
@@ -134,5 +136,10 @@ public class GridController {
     
     public boolean isRunning() {
         return timeline.getStatus() == Animation.Status.RUNNING;
+    }
+    
+    public void resetAuto() {
+        Mechanics.inst.resetAutomaton();
+        timeline.playFromStart();
     }
 }

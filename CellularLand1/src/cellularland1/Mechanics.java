@@ -18,9 +18,14 @@ public final class Mechanics {
         boolGrid = automaton.initPosition;
     }
     
+    public void setButtons(ButtonNode[][] buttons) {
+        this.buttons = buttons;
+    }
     
     private CAutomaton automaton;
     private boolean[][] boolGrid;
+    
+    private ButtonNode[][] buttons;
     
     /** This size is different from the size of buttons, because I want to 
      * simulate the automaton on a larger grid than just the grid displayed.
@@ -33,7 +38,7 @@ public final class Mechanics {
      */
     private final int offset = 5;
     
-    public void step(ButtonNode[][] buttons) {
+    public void step() {
         boolean[][] newBoolGrid = new boolean[size][size];
         
         for(int i = 0; i < size; i++) {
@@ -58,6 +63,10 @@ public final class Mechanics {
         }
         
         boolGrid = newBoolGrid;
+        update();
+    }
+    
+    private void update() {
         for(int i = offset; i < offset + buttons.length; i++) {
             for(int j = offset; j < offset + buttons.length; j++) {
                 if(boolGrid[i][j]) {
@@ -75,6 +84,7 @@ public final class Mechanics {
     
     public void resetAutomaton() {
         boolGrid = automaton.initPosition;
+        update();
     }
     
     public void changed(int x, int y) {

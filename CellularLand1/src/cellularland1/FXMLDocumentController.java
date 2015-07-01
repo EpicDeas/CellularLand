@@ -4,7 +4,6 @@ package cellularland1;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
@@ -110,7 +109,7 @@ public class FXMLDocumentController implements Initializable {
         napoveda.setText(NapovedaText.text);
         
         digitalClock = new DigitalClock(watch);
-        
+                
         obtiznostChoiceBox.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number number2) -> {
             gridController.setDifficulty((int)number2);
         });
@@ -197,6 +196,7 @@ public class FXMLDocumentController implements Initializable {
     public void restartAutomatuButtonAction(ActionEvent e) {
         if(status == Status.RUNNING && manaController.restartAuto()) {
             Mechanics.inst.resetAutomaton();
+            gridController.getTimeline().playFromStart();
         }
     }
     
