@@ -1,6 +1,9 @@
 
 package cellularland1;
 
+import java.io.File;
+import java.util.Random;
+
 /**
  *
  * @author Deas
@@ -11,9 +14,15 @@ public final class Mechanics {
         newAutomaton();
     }
     
+    private final String directory = "automataDB";
     public void newAutomaton() {
-        // TODO Here I have to somehow generate the random automaton
-        Loader l = new Loader("automataDB/life1.txt");
+        // Here I have to somehow generate the random automaton
+        File dir = new File(directory);
+        File[] dirListing = dir.listFiles();
+        Random r = new Random();
+        String chosen = dirListing[r.nextInt(dirListing.length)].getPath();
+        
+        Loader l = new Loader(chosen);
         automaton = l.load(size);
         boolGrid = automaton.initPosition;
     }

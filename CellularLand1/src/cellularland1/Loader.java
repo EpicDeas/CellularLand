@@ -26,13 +26,22 @@ public class Loader {
             boolean[][] boolGrid = new boolean[size][size];
             BufferedReader br = new BufferedReader(fr);
             
-            String tokens[] = br.readLine().split("/");
+            String line = br.readLine();
+            String tokens[] = line.split("/");
             ArrayList<Integer> B = new ArrayList<>();
             ArrayList<Integer> S = new ArrayList<>();
-            tokens[0].chars().forEach(ch -> S.add(Character.getNumericValue(ch)));
-            tokens[1].chars().forEach(ch -> B.add(Character.getNumericValue(ch)));
+            if(tokens.length == 2) {
+                tokens[0].chars().forEach(ch -> S.add(Character.getNumericValue(ch)));
+                tokens[1].chars().forEach(ch -> B.add(Character.getNumericValue(ch)));
+            } else if(line.charAt(0) == '/') {
+                tokens[0].chars().forEach(ch -> B.add(Character.getNumericValue(ch)));
+            } else if(line.charAt(line.length() - 1) == '/') {
+                tokens[0].chars().forEach(ch -> S.add(Character.getNumericValue(ch)));
+            } else {
+                throw new IllegalArgumentException();
+            }
             
-            String line = br.readLine();
+            line = br.readLine();
             int offset = (size - line.length()) / 2;
             int i = offset;
             
