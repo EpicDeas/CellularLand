@@ -118,7 +118,7 @@ public class GridController {
                     Mechanics.inst.step();
                 }));
         
-        Mechanics.inst.step();
+        Mechanics.inst.update();
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
     }

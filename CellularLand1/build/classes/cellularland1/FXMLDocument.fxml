@@ -87,8 +87,8 @@
             <Button layoutX="8.0" layoutY="53.0" mnemonicParsing="false" onAction="#konecHryButtonAction" prefHeight="33.0" prefWidth="119.0" text="Konec hry" />
             <Button fx:id="napovedaButton" layoutX="133.0" layoutY="14.0" mnemonicParsing="false" onAction="#napovedaButtonAction" prefHeight="33.0" prefWidth="119.0" text="Nápověda" />
             <Separator layoutX="17.0" layoutY="134.0" prefHeight="0.0" prefWidth="239.0" />
-            <ChoiceBox fx:id="obtiznostChoiceBox" layoutX="55.0" layoutY="174.0" prefWidth="150.0" styleClass="label-bright" />
-            <Label layoutX="87.0" layoutY="146.0" styleClass="label-slash" text="Obtížnost:" />
+            <ChoiceBox fx:id="obtiznostChoiceBox" layoutX="9.0" layoutY="168.0" prefHeight="41.0" prefWidth="119.0" styleClass="label-bright" />
+            <Label layoutX="27.0" layoutY="147.0" styleClass="label-slash" text="Obtížnost:" />
             <Separator layoutX="11.0" layoutY="222.0" prefHeight="0.0" prefWidth="239.0" />
             <Button layoutX="76.0" layoutY="370.0" mnemonicParsing="false" onAction="#restartAutomatuButtonAction" prefHeight="40.0" prefWidth="161.0" text="Restart automatu" />
             <Button layoutX="76.0" layoutY="317.0" mnemonicParsing="false" onAction="#zastavAutomatButtonAction" prefHeight="40.0" prefWidth="161.0" text="Zastav automat" />
@@ -107,6 +107,8 @@
                   <Font size="24.0" />
                </font>
             </Label>
+            <ChoiceBox fx:id="levelChoiceBox" layoutX="133.0" layoutY="168.0" prefHeight="41.0" prefWidth="119.0" styleClass="label-bright" />
+            <Label layoutX="156.0" layoutY="147.0" styleClass="label-slash" text="Level:" />
          </children></AnchorPane>
   </items>
 </SplitPane>

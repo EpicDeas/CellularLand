@@ -34,7 +34,7 @@ public class FXMLDocumentController implements Initializable {
     private GridPane grid;
     /** Choice box with selection of difficulty. */
     @FXML
-    private ChoiceBox obtiznostChoiceBox;
+    private ChoiceBox obtiznostChoiceBox, levelChoiceBox;
     /** TableColumns contained in TableView tabulka, that are used in the
      statistics window.*/
     @FXML
@@ -83,6 +83,8 @@ public class FXMLDocumentController implements Initializable {
         
         obtiznostChoiceBox.setItems(FXCollections.observableArrayList("Snadná", "Střední", "Těžká", "Nightmare"));
         obtiznostChoiceBox.setValue("Střední");
+        levelChoiceBox.setItems(FXCollections.observableArrayList("1", "2", "3", "4"));
+        levelChoiceBox.setValue("1");
         
         tabulka.setEditable(true);
 
@@ -112,6 +114,9 @@ public class FXMLDocumentController implements Initializable {
                 
         obtiznostChoiceBox.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number number2) -> {
             gridController.setDifficulty((int)number2);
+        });
+        levelChoiceBox.getSelectionModel().selectedIndexProperty().addListener((ObservableValue<? extends Number> observableValue, Number number, Number number2) -> {
+            Mechanics.inst.setLevel((int)number2 + 1);
         });
     }    
     

@@ -2,6 +2,7 @@
 package cellularland1;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -24,18 +25,20 @@ public class CAutomaton {
         return B.contains(alive);
     }
     
-    public String getS() {
-        String Sstr = "";
-        for(Integer i : S) {
-            Sstr += i;
+    public char[] getS() {
+        char[] arr = new char[S.size()];
+        for(int i = 0; i < S.size(); i++) {
+            arr[i] = (char)('0' + S.get(i));
         }
-        return Sstr;
+        Arrays.sort(arr);
+        return arr;
     }
-    public String getB() {
-        String Bstr = "";
-        for(Integer i : B) {
-            Bstr += i;
+    public char[] getB() {
+        char[] arr = new char[B.size()];
+        for(int i = 0; i < B.size(); i++) {
+            arr[i] = (char)('0' + B.get(i));
         }
-        return Bstr;
+        Arrays.sort(arr);
+        return arr;
     }
 }

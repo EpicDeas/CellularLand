@@ -2,6 +2,7 @@
 package cellularland1;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -14,16 +15,21 @@ public final class Mechanics {
         newAutomaton();
     }
     
-    private final String directory = "automataDB";
+    private final String directory = "automataDB/level1";
+    private int level = 1;
+    
     public void newAutomaton() {
         // Here I have to somehow generate the random automaton
-        File dir = new File(directory);
-        File[] dirListing = dir.listFiles();
-        Random r = new Random();
-        String chosen = dirListing[r.nextInt(dirListing.length)].getPath();
+//        File dir = new File(directory);
+//        File[] dirListing = dir.listFiles();
+//        Random r = new Random();
+//        String chosen = dirListing[r.nextInt(dirListing.length)].getPath();
+//        
+//        Loader l = new Loader(chosen);
+//        automaton = l.load(size);
+//        boolGrid = automaton.initPosition;
         
-        Loader l = new Loader(chosen);
-        automaton = l.load(size);
+        automaton = AutomatonGenerator.generate(level);
         boolGrid = automaton.initPosition;
     }
     
@@ -75,7 +81,7 @@ public final class Mechanics {
         update();
     }
     
-    private void update() {
+    public void update() {
         for(int i = offset; i < offset + buttons.length; i++) {
             for(int j = offset; j < offset + buttons.length; j++) {
                 if(boolGrid[i][j]) {
@@ -88,7 +94,13 @@ public final class Mechanics {
     }
     
     public boolean isCorrect(String S,String B) {
-        return S.equals(automaton.getS()) && B.equals(automaton.getB());
+        char[] Sch = S.toCharArray();
+        Arrays.sort(Sch);
+        char[] Bch = B.toCharArray();
+        Arrays.sort(Bch);
+        
+        return Arrays.equals(Sch, automaton.getS()) 
+                && Arrays.equals(Bch, automaton.getB());
     }
     
     public void resetAutomaton() {
@@ -101,9 +113,19 @@ public final class Mechanics {
     }
     
     public String getS() {
-        return automaton.getS();
+        String str = "";
+        for(char ch : automaton.getS()) 
+            str += ch;
+        return str;
     }
     public String getB() {
-        return automaton.getB();
+        String str = "";
+        for(char ch : automaton.getB()) 
+            str += ch;
+        return str;
+    }
+    
+    public void setLevel(int level) {
+        this.level = level;
     }
 }

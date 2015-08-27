@@ -22,8 +22,9 @@ public class CellularAutoGenerator {
     }
     
     private static final int size = 30;
-    private static final int minimalRuntime = 15;
+    private static final int minimalRuntime = 20;
     private static final String directory = "automata";
+    private static int fileName = 1;
     
     private static void generateAutomata() {
         ArrayList<Integer> S,B;    
@@ -31,39 +32,35 @@ public class CellularAutoGenerator {
         for(int i = 0; i <= 8; i++) {
             for(int j = 0; j <= 8; j++) {
                 for(int k = 0; k <= 8; k++) {
-                    for(int l = 0; l <= 7; l++) {
-                        
-                        S = new ArrayList<>();
-                        B = new ArrayList<>();
-                        
-                        // Create new file
-                        try(BufferedWriter bw = new BufferedWriter(new FileWriter(directory + "/" + i + j + k + "ver" + l + ".txt"))) {
-                            // Write the transition function and generate a new random position
-                            if(l/2 <= 0) {
-                                if(i == j || j == k || i == k) continue;
-                                S.add(i); S.add(j); S.add(k);
-                            } else if (l/2 <= 1) {
-                                if(i == j) continue;
-                                S.add(i); S.add(j); B.add(k);
-                            } else if (l/2 <= 2) {
-                                if(j == k) continue;
-                                S.add(i); B.add(j); B.add(k);
-                            } else {
-                                if(i == j || j == k || i == k) continue;
-                                B.add(i); B.add(j); B.add(k);
-                            }                        
-                            boolean[][] initPosition = generatePosition();
-                            CAutomaton a = new CAutomaton(initPosition, S, B);
-                            if(test(a)) printAutomaton(bw, initPosition, S, B);
-                        } catch (IOException e) { }           
-                    }
+                    // Difficult automata
                 }
+                // Less difficult automata
             }
+            // Easy automata
+            S = new ArrayList<>();
+            B = new ArrayList<>();
+            S.add(i);
+            B.add(i);
+            createFile(S, new ArrayList<>());
+            createFile(new ArrayList<>(), B);
         }
-
     }
     
-    private static boolean[][] generatePosition() throws IOException {
+    private static void createFile(ArrayList<Integer> S, ArrayList<Integer> B) {
+        int i = 0;
+        do { 
+            boolean[][] initPosition = generatePosition();
+            CAutomaton a = new CAutomaton(initPosition, S, B);
+            if(test(a)) {
+                try (BufferedWriter bw = new BufferedWriter(new FileWriter(directory + "/" + fileName++ + ".txt"))) {
+                    printAutomaton(bw, initPosition, S, B);
+                } catch (IOException e) { }   
+                break;
+            }
+        } while(i++ < 1000);
+    }
+    
+    private static boolean[][] generatePosition() {
         Random r = new Random();
         int x = 5 + r.nextInt(size - 10);
         int y = 5 + r.nextInt(size - 10);
@@ -123,6 +120,7 @@ public class CellularAutoGenerator {
     public static boolean[][] step(boolean[][] boolGrid, CAutomaton automaton) {
         boolean[][] newBoolGrid = new boolean[size][size];
         boolean isSthingAlive = false;
+        boolean hasSthingChanged = false;
         
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
@@ -143,6 +141,7 @@ public class CellularAutoGenerator {
                     newBoolGrid[i][j] = automaton.willBeBorn(alive);
                 }
                 isSthingAlive = isSthingAlive || newBoolGrid[i][j];
+                hasSthingChanged = hasSthingChanged || (newBoolGrid[i][j] != boolGrid[i][j]);
             }
         }
         if(isSthingAlive) return newBoolGrid;
