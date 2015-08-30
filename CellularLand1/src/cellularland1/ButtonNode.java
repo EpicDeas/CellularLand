@@ -81,18 +81,19 @@ public class ButtonNode {
         if(state == State.REVEALED_ALIVE) {
             String str = "";
             switch(rule) {
-                case 0: str = "-fx-border-color: #B52D18;";
+                case 0: str = "-fx-background-color: limegreen;";
                     break;
-                case 1: str = "-fx-border-color: darkorchid;";
+                case 1: str = "-fx-background-color: darkorchid;";
                     break;
-                case 2: str = "-fx-border-color: mediumblue;";
+                case 2: str = "-fx-background-color: mediumblue;";
                     break;
-                case 3: str = "-fx-border-color: olive;";
+                case 3: str = "-fx-background-color: olive;";
                     break;
                 default:
                     throw new IllegalArgumentException("Only 4 colors for rule usage supported!");
             }
-            button.setStyle(button.getStyle() + ";-fx-border-width: 3;" + str);
+            //button.setStyle(button.getStyle() + ";-fx-border-width: 3;" + str);
+            button.setStyle(str);
         }
     }
     /** Set this node to alive, but keep the status of revelation. */

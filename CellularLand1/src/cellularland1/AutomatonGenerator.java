@@ -17,7 +17,7 @@ public class AutomatonGenerator {
     /** Size of the board. */
     private static final int size = 30;
     /** Size of the visible board. */
-    private static final int visibleSize = 18;
+    private static final int visibleSize = 14;
     /** Minimal number of steps the generated automaton has to last (i.e.
      * a cell is alive afterwards).
      */
@@ -32,6 +32,11 @@ public class AutomatonGenerator {
      * never used and therefore the player cannot recognize it.
      */
     private static final int minimalRuleUsage = 50;
+    /** Minimal number of times that every rule has to be used AFTER sampling 
+     * the rule usages. This is needed to ensure that no rule is used only in 
+     * the beginning and not later on.
+     */
+    private static final int minimalRuleUsageAfterSampling = 5;
     
     /**
      * Generates a new random cellular automaton with the level specified.
@@ -79,15 +84,25 @@ public class AutomatonGenerator {
         
         int[] Susage = new int[S.size()];
         int[] Busage = new int[B.size()];
+        int[] SusageSample = null;
+        int[] BusageSample = null;
         
-        while(i < minimalRuntime) {
+        while(i++ < minimalRuntime) {
             boolGrid = step(boolGrid, S, B, Susage, Busage);
             if(boolGrid == null) {
                 return false;
             }
-            i++;
+            if(i == minimalRuntime/2) {
+                SusageSample = Susage.clone();
+                BusageSample = Busage.clone();
+            }
         }
-        
+        for(int j = 0; j < S.size(); j++) 
+            if(Susage[j] - minimalRuleUsageAfterSampling < SusageSample[j])
+                return false;
+        for(int j = 0; j < B.size(); j++) 
+            if(Busage[j] - minimalRuleUsageAfterSampling < BusageSample[j])
+                return false;
         return Arrays.stream(Busage).allMatch(j -> j >= minimalRuleUsage) && 
                 Arrays.stream(Susage).allMatch(j -> j >= minimalRuleUsage);
     }
@@ -100,8 +115,6 @@ public class AutomatonGenerator {
         boolean[][] newBoolGrid = new boolean[size][size];
         // Is a cell in the grid alive?
         boolean isSthingAlive = false;
-        // Has something changed from the previous generation?
-        boolean hasSthingChanged = false;
         
         int offset = (size - visibleSize) / 2;
         
@@ -135,9 +148,8 @@ public class AutomatonGenerator {
                     }
                 }
                 // Update the bools
-                if(i > offset && i <= size - offset && j > offset && j <= size - offset) {
+                if(i >= offset && i < size - offset && j >= offset && j < size - offset) {
                     isSthingAlive = isSthingAlive || newBoolGrid[i][j];
-                    hasSthingChanged = hasSthingChanged || (newBoolGrid[i][j] != boolGrid[i][j]);
                 }
             }
         }

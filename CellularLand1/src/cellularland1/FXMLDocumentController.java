@@ -9,7 +9,6 @@ import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -42,7 +41,7 @@ public class FXMLDocumentController implements Initializable {
     /** TableColumns contained in TableView tabulka, that are used in the
      statistics window.*/
     @FXML
-    private TableColumn columnHrac, columnSkore, columnDatum;
+    private TableColumn columnHrac, columnSkore, columnDifficulty, columnLevel, columnDatum;
     /** TableView that contains TableColumns, for view the statistics. */
     @FXML
     private TableView tabulka;
@@ -96,11 +95,16 @@ public class FXMLDocumentController implements Initializable {
         
         tabulka.setEditable(true);
 
+        // Initialize the statistics columns
         columnHrac.setCellValueFactory(new PropertyValueFactory<>("name"));
         columnSkore.setCellValueFactory(new PropertyValueFactory<>("score"));
+        columnDifficulty.setCellValueFactory(new PropertyValueFactory<>("difficulty"));
+        columnLevel.setCellValueFactory(new PropertyValueFactory<>("level"));
         columnDatum.setCellValueFactory(new PropertyValueFactory<>("date"));
         columnHrac.setSortable(false);
         columnSkore.setSortable(false);
+        columnDifficulty.setSortable(false);
+        columnLevel.setSortable(false);
         columnDatum.setSortable(false);
         
         saveButton.setVisible(false);
@@ -171,12 +175,17 @@ public class FXMLDocumentController implements Initializable {
             status = Status.RUNNING;
             S.setText("");
             B.setText("");
+            
+            levelChoiceBox.setDisable(true);
+            obtiznostChoiceBox.setDisable(true);
         }
     }
         
     /** The listener to pushing the button "Konec kola". */
     public void konecKolaButtonAction(ActionEvent e) {
         if(status == Status.RUNNING || status == Status.STOPPED) {
+            if(status == Status.STOPPED)
+                zastavAutomatButtonAction(null);
             digitalClock.stop();
             gridController.stop();
             manaController.stop();
@@ -184,6 +193,9 @@ public class FXMLDocumentController implements Initializable {
             
             S.setText(Mechanics.inst.getS());
             B.setText(Mechanics.inst.getB());
+                        
+            levelChoiceBox.setDisable(false);
+            obtiznostChoiceBox.setDisable(false);
         }
     }
         
@@ -218,6 +230,7 @@ public class FXMLDocumentController implements Initializable {
         if((status == Status.RUNNING || status == Status.STOPPED) && Mechanics.inst.isCorrect(S.getText(),B.getText())) {
             if(status == Status.STOPPED) 
                 zastavAutomatButtonAction(null);
+            
             if(score.getText().equals("9")) {
                 // 10 automata done! Write to statistics and stop everything.
                 score.setText("10");
@@ -234,6 +247,10 @@ public class FXMLDocumentController implements Initializable {
                 score.setText("" + ++i);
                 
                 konecKolaButtonAction(null);
+                            
+                levelChoiceBox.setDisable(true);
+                obtiznostChoiceBox.setDisable(true);
+                
                 status = Status.BETWEEN;
                 success.setVisible(true);
 
@@ -263,7 +280,9 @@ public class FXMLDocumentController implements Initializable {
     /** The listener to pushing button save after a successful round. */
     public void saveButtonAction(ActionEvent e) {
         int points = gridController.getDifficulty() * digitalClock.getTotalSeconds();
-        StatisticsRecord.newRecord(newRecordField.getText(),tabulka,points);
+        StatisticsRecord.newRecord(newRecordField.getText(),tabulka,points, 
+                obtiznostChoiceBox.getSelectionModel().selectedIndexProperty().get(),
+                levelChoiceBox.getSelectionModel().selectedIndexProperty().get() + 1);
         
         newRecord.setVisible(false);
         saveButton.setVisible(false);
