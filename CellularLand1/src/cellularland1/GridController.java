@@ -88,7 +88,6 @@ public class GridController {
                 grid.setVisible(true);
             }
         }
-        
     }  
     
     /** The getter of grid. Currently is public. */
@@ -111,7 +110,13 @@ public class GridController {
         return size;
     }
     
+   /**
+    * Starts the mechanics of the game, the transition function 
+    * is applied in fixed intervals.
+    */
     public void start() {
+        if(timeline != null) 
+            timeline.stop();
         timeline = new Timeline(new KeyFrame(
                 Duration.millis((4-difficulty)*500),
                 ae -> {
@@ -122,14 +127,22 @@ public class GridController {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
     }
+    /**
+     * Stops the timeline, the automaton stops refreshing.
+     */
     public void stop() {
         timeline.stop();
     }
-    
+    /**
+     * Resumes the running of the automaton.
+     */
     public void resume() {
         timeline.play();
     }
-    
+    /**
+     * Sets the difficulty.
+     * @param difficulty 
+     */
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
@@ -137,7 +150,7 @@ public class GridController {
     public boolean isRunning() {
         return timeline.getStatus() == Animation.Status.RUNNING;
     }
-    
+    /** Reset the automaton run, sets the position to initial. */
     public void resetAuto() {
         Mechanics.inst.resetAutomaton();
         timeline.playFromStart();

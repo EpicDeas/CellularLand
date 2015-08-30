@@ -16,7 +16,7 @@
             <TableView fx:id="tabulka" layoutX="14.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="20.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0">
               <columns>
                 <TableColumn fx:id="columnHrac" prefWidth="150.0" text="Hráč" />
-                <TableColumn fx:id="columnSkore" minWidth="0.0" prefWidth="338.0" text="Skóre" />
+                <TableColumn fx:id="columnSkore" minWidth="0.0" prefWidth="338.0" text="Sekundy" />
                   <TableColumn fx:id="columnDatum" prefWidth="162.0" text="Datum" />
               </columns>
                <padding>
@@ -78,6 +78,10 @@
             <Button fx:id="saveButton" layoutX="365.0" layoutY="288.0" mnemonicParsing="false" onAction="#saveButtonAction" text="Save!" />
             <TextField fx:id="newRecordField" layoutX="257.0" layoutY="238.0" promptText="Write your name" />
             <Button fx:id="dontSaveButton" layoutX="275.0" layoutY="288.0" mnemonicParsing="false" onAction="#dontSaveButtonAction" text="Cancel" />
+            <TextArea fx:id="success" editable="false" layoutX="143.0" layoutY="169.0" prefHeight="88.0" prefWidth="421.0" text="Správně! Pokračujeme za 1 sekundu!">
+               <font>
+                  <Font size="20.0" />
+               </font></TextArea>
          </children></AnchorPane>
     <AnchorPane maxWidth="260" minHeight="0.0" minWidth="260" prefHeight="511.0" prefWidth="1000">
          <children>
@@ -109,6 +113,8 @@
             </Label>
             <ChoiceBox fx:id="levelChoiceBox" layoutX="133.0" layoutY="168.0" prefHeight="41.0" prefWidth="119.0" styleClass="label-bright" />
             <Label layoutX="156.0" layoutY="147.0" styleClass="label-slash" text="Level:" />
+            <Label layoutX="119.0" layoutY="459.0" styleClass="label-slash" text="Skóre:" />
+            <Label fx:id="score" layoutX="169.0" layoutY="459.0" styleClass="label-slash" text="0" />
          </children></AnchorPane>
   </items>
 </SplitPane>

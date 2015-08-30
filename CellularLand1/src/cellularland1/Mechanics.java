@@ -1,60 +1,78 @@
 
 package cellularland1;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.Random;
 
 /**
+ * The singleton class the contains the main mechanics, interface between the
+ * graphics and the automaton.
  *
  * @author Deas
  */
 public final class Mechanics {
-    public static Mechanics inst = new Mechanics();
-    private Mechanics() {
-        newAutomaton();
-    }
-    
-    private final String directory = "automataDB/level1";
-    private int level = 1;
-    
-    public void newAutomaton() {
-        // Here I have to somehow generate the random automaton
-//        File dir = new File(directory);
-//        File[] dirListing = dir.listFiles();
-//        Random r = new Random();
-//        String chosen = dirListing[r.nextInt(dirListing.length)].getPath();
-//        
-//        Loader l = new Loader(chosen);
-//        automaton = l.load(size);
-//        boolGrid = automaton.initPosition;
-        
-        automaton = AutomatonGenerator.generate(level);
-        boolGrid = automaton.initPosition;
-    }
-    
-    public void setButtons(ButtonNode[][] buttons) {
-        this.buttons = buttons;
-    }
-    
+    /** Currently used automaton. */
     private CAutomaton automaton;
-    private boolean[][] boolGrid;
-    
+    /** Current position in the main board. */
+    private boolean[][] boolGrid;    
+    /** Array of the button nodes that are used to play the game. */
     private ButtonNode[][] buttons;
+    /** Level of the game, used to decide which automaton to generate. */
+    private int level = 1;
     
     /** This size is different from the size of buttons, because I want to 
      * simulate the automaton on a larger grid than just the grid displayed.
      */
-    
     private final int size = 30;
-    
+    /** Size of the square of cells that are revealed in the initial position. */
+    private final int revealedInit = 16;
     /** Number of cells on the margin of grid that are not displayed.
      * size of displayed grid = 2 * offset + size
      */
     private final int offset = 5;
     
+    /** Singleton instance */
+    public static Mechanics inst = new Mechanics();
+    private Mechanics() {
+        
+    }
+        
+    /** Generate new random automaton with the current level and set it as the
+     * used automaton.
+     */
+    public void newAutomaton() {
+        // Generate random automaton
+        automaton = AutomatonGenerator.generate(level);
+        // And set the position
+        boolGrid = automaton.initPosition;
+        
+        // And set the buttons to their initial state
+        int revOffset = (buttons.length - revealedInit) / 2;
+        for(int i = 0; i < buttons.length; i++) 
+            for(int j = 0; j < buttons[i].length; j++) {
+                if(i < revOffset || i >= revOffset + revealedInit ||
+                        j < revOffset || j >= revOffset + revealedInit) {
+                    buttons[i][j].setHidden();
+                } else {
+                    buttons[i][j].setRevealed();
+                }
+            }
+    }
+    /** Used only once in the beginning to set the button array from the 
+     * initialization.
+     * @param buttons 
+     */ 
+    public void setButtons(ButtonNode[][] buttons) {
+        this.buttons = buttons;
+    }
+    
+    /** Called when the transition function has to be applied.
+     * Recomputes the position.
+     */
     public void step() {
+        // The new position
         boolean[][] newBoolGrid = new boolean[size][size];
+        // The array of rules used to determine the state of cells.
+        int[][] ruleGrid = new int[size][size];
         
         for(int i = 0; i < size; i++) {
             for(int j = 0; j < size; j++) {
@@ -70,17 +88,19 @@ public final class Mechanics {
                     }
                 }
                 if(boolGrid[i][j]) {
-                    newBoolGrid[i][j] = automaton.willSurvive(alive);
+                    ruleGrid[i][j] = automaton.willSurvive(alive);
+                    newBoolGrid[i][j] = ruleGrid[i][j] != -1;
                 } else {
-                    newBoolGrid[i][j] = automaton.willBeBorn(alive);
+                    ruleGrid[i][j] = automaton.willBeBorn(alive);
+                    newBoolGrid[i][j] = ruleGrid[i][j] != -1;             
                 }
             }
         }
         
         boolGrid = newBoolGrid;
-        update();
+        update(ruleGrid);
     }
-    
+    /** Update the status of button nodes according to the new position. */
     public void update() {
         for(int i = offset; i < offset + buttons.length; i++) {
             for(int j = offset; j < offset + buttons.length; j++) {
@@ -92,7 +112,23 @@ public final class Mechanics {
             }
         }
     }
-    
+    /** Update the status of button nodes AND set the border according to the
+     * rule used.
+     * @param ruleGrid 
+     */
+    public void update(int[][] ruleGrid) {
+        for(int i = offset; i < offset + buttons.length; i++) {
+            for(int j = offset; j < offset + buttons.length; j++) {
+                if(boolGrid[i][j]) {
+                    buttons[i-offset][j-offset].birth();
+                    buttons[i-offset][j-offset].seeUsedRule(ruleGrid[i][j]);
+                } else {
+                    buttons[i-offset][j-offset].die();
+                }
+            }
+        }
+    }
+    /** Is the transition function in argument correct? */
     public boolean isCorrect(String S,String B) {
         char[] Sch = S.toCharArray();
         Arrays.sort(Sch);
@@ -102,7 +138,7 @@ public final class Mechanics {
         return Arrays.equals(Sch, automaton.getS()) 
                 && Arrays.equals(Bch, automaton.getB());
     }
-    
+    /** Reset the automaton to its initial position. */
     public void resetAutomaton() {
         boolGrid = automaton.initPosition;
         update();
@@ -112,19 +148,21 @@ public final class Mechanics {
         boolGrid[x + offset][y + offset] ^= true;
     }
     
+    /** Returns the string with rules for survival. */
     public String getS() {
         String str = "";
         for(char ch : automaton.getS()) 
             str += ch;
         return str;
     }
+    /** Returns the string with rules for birth. */
     public String getB() {
         String str = "";
         for(char ch : automaton.getB()) 
             str += ch;
         return str;
     }
-    
+    /** Set the level to generate automata with. */
     public void setLevel(int level) {
         this.level = level;
     }

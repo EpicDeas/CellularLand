@@ -21,7 +21,10 @@ public class ButtonNode {
         state = State.REVEALED_DEAD;
         update();
     }
-    
+    /**
+     * The button was clicked, the proper action is taken.
+     * @param autoStopped Was the automaton stopped while the button was clicked.
+     */
     public void clicked(boolean autoStopped) {
         if(!autoStopped) {
             switch(state) {
@@ -56,7 +59,7 @@ public class ButtonNode {
             update();
         }
     }
-    
+    /** Set the color of the button according to its state. */
     private void update() {
         switch(state) {              
             case REVEALED_ALIVE:
@@ -65,35 +68,66 @@ public class ButtonNode {
             case REVEALED_DEAD:
                 button.setStyle("-fx-background-color: #c1c1c1");
                 break;
+            default:
+                button.setStyle("-fx-background-color: #1d1d1d");
+                break;
         }
     }
-    
+    /**
+     * Set the color of the button border according to the rule used.
+     * @param rule The number of the rule used. 0 <= i <= 3
+     */
+    public void seeUsedRule(int rule) {
+        if(state == State.REVEALED_ALIVE) {
+            String str = "";
+            switch(rule) {
+                case 0: str = "-fx-border-color: #B52D18;";
+                    break;
+                case 1: str = "-fx-border-color: darkorchid;";
+                    break;
+                case 2: str = "-fx-border-color: mediumblue;";
+                    break;
+                case 3: str = "-fx-border-color: olive;";
+                    break;
+                default:
+                    throw new IllegalArgumentException("Only 4 colors for rule usage supported!");
+            }
+            button.setStyle(button.getStyle() + ";-fx-border-width: 3;" + str);
+        }
+    }
+    /** Set this node to alive, but keep the status of revelation. */
     public void birth() {
         if(!this.isAlive()) {
             if(this.isRevealed())
                 state = State.REVEALED_ALIVE;
             else 
                 state = State.HIDDEN_ALIVE;
-            update();
         } 
+        update();
     }   
-    
+    /** Set this node to dead, but keep the status of revelation. */
     public void die() {
         if(this.isAlive()) {
             if(this.isRevealed())
                 state = State.REVEALED_DEAD;
             else 
                 state = State.HIDDEN_DEAD;
-            update();
         } 
+        update();
     }
-    
+    /** Is this node alive */
     public boolean isAlive() {
         return state == State.HIDDEN_ALIVE || state == State.REVEALED_ALIVE;
     }
-    
+    /** Is this node revealed */
     public boolean isRevealed() {
         return state == State.REVEALED_ALIVE || state == State.REVEALED_DEAD;
+    }
+    public void setRevealed() {
+        state = State.REVEALED_DEAD;
+    }
+    public void setHidden() {
+        state = State.HIDDEN_DEAD;
     }
     
     public Button getButton() {

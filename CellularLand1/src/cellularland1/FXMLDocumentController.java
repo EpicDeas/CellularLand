@@ -3,10 +3,13 @@ package cellularland1;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,6 +22,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.util.Duration;
 
 /**
  * FXML controller of the XML document, contains the objects
@@ -65,6 +69,10 @@ public class FXMLDocumentController implements Initializable {
     private Button dontSaveButton;
     @FXML
     private TextField newRecordField;
+    @FXML
+    private Label score;
+    @FXML
+    private TextArea success;
     
     /** The class that serves as interface to the watch. */
     private DigitalClock digitalClock;
@@ -101,6 +109,7 @@ public class FXMLDocumentController implements Initializable {
         newRecord.setEditable(false);
         newRecordField.setVisible(false);
         newRecord.setText("This is correct! Save your name to statistics!");
+        success.setVisible(false);
 
         StatisticsRecord.loadStats("statistics.txt",tabulka);
         tabulka.setVisible(false);
@@ -151,12 +160,11 @@ public class FXMLDocumentController implements Initializable {
     /** The listener to pushing the button "Spustit hru". */
     public void spustitHruButtonAction(ActionEvent e) {
         if (status == Status.INITIALIZED || status == Status.END_OF_TURN) {
+            score.setText("0");
             digitalClock.reset();
             digitalClock.start();
             // Reset mana state and the game mechanics.
             manaController.reset();
-            
-            // TODO reset game mechanics
             Mechanics.inst.newAutomaton();
             gridController.start();
             
@@ -208,13 +216,42 @@ public class FXMLDocumentController implements Initializable {
     /** The listener to pushing the button "Hotovo!. */
     public void hotovoButtonAction(ActionEvent e) {       
         if((status == Status.RUNNING || status == Status.STOPPED) && Mechanics.inst.isCorrect(S.getText(),B.getText())) {
-            konecKolaButtonAction(null);
-            newRecord.setVisible(true);
-            saveButton.setVisible(true);
-            newRecordField.setVisible(true);
-            dontSaveButton.setVisible(true);
-            
-            status = Status.WAITING_FOR_STATISTIC;
+            if(status == Status.STOPPED) 
+                zastavAutomatButtonAction(null);
+            if(score.getText().equals("9")) {
+                // 10 automata done! Write to statistics and stop everything.
+                score.setText("10");
+                konecKolaButtonAction(null);
+                newRecord.setVisible(true);
+                saveButton.setVisible(true);
+                newRecordField.setVisible(true);
+                dontSaveButton.setVisible(true);
+
+                status = Status.WAITING_FOR_STATISTIC;
+            } else {
+                // Correct transition function, continue with the next automaton.
+                int i = Integer.parseInt(score.getText());
+                score.setText("" + ++i);
+                
+                konecKolaButtonAction(null);
+                status = Status.BETWEEN;
+                success.setVisible(true);
+
+                Timeline tempTimeline = new Timeline(new KeyFrame(
+                        Duration.seconds(2), (ActionEvent event) -> {
+                            digitalClock.resume();
+                            manaController.reset();
+                            
+                            Mechanics.inst.newAutomaton();
+                            gridController.start();
+                            status = Status.RUNNING;
+                            success.setVisible(false);
+                            S.setText("");
+                            B.setText("");
+                }));
+                tempTimeline.setCycleCount(1);
+                tempTimeline.play();
+            }
         } else if ((status == Status.RUNNING || status == Status.STOPPED)) {
             // TODO announce it is wrong and keep going?
             
@@ -223,6 +260,7 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
+    /** The listener to pushing button save after a successful round. */
     public void saveButtonAction(ActionEvent e) {
         int points = gridController.getDifficulty() * digitalClock.getTotalSeconds();
         StatisticsRecord.newRecord(newRecordField.getText(),tabulka,points);
@@ -234,7 +272,7 @@ public class FXMLDocumentController implements Initializable {
         
         status = Status.END_OF_TURN;
     }
-    
+    /** The listener to pushing the button don't save after a successful round. */
     public void dontSaveButtonAction(ActionEvent e) {
         newRecord.setVisible(false);
         saveButton.setVisible(false);
@@ -245,6 +283,6 @@ public class FXMLDocumentController implements Initializable {
     }
     
     public enum Status {
-        RUNNING, END_OF_TURN, STOPPED, INITIALIZED, WAITING_FOR_STATISTIC;
+        RUNNING, END_OF_TURN, STOPPED, INITIALIZED, WAITING_FOR_STATISTIC, BETWEEN;
     }
 }

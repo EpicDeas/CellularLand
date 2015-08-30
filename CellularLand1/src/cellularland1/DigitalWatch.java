@@ -57,6 +57,10 @@ final class DigitalClock {
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.play();
     }
+    public void resume() {
+        timeline.setCycleCount(Animation.INDEFINITE);
+        timeline.play();
+    }
     public void stop() {
         timeline.stop();
     }

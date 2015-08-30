@@ -151,7 +151,7 @@
 }
 
 .text-area {
-        -fx-base: #1d1d1d;
+    -fx-base: #1d1d1d;
     -fx-background-radius: 20;
     -fx-control-inner-background: #1d1d1d;
     -fx-background-color: #1d1d1d;
@@ -159,7 +159,15 @@
     -fx-table-header-border-color: transparent;
     -fx-padding: 10;
     -fx-text-fill: white;
+    -fx-font-size: 15;
+    -fx-font-weight: bolder;
 }
+
+.text-area *.text {
+    -fx-text-alignment: center;
+
+}
+
 
 .gridbutton {
     -fx-padding: 5 22 5 10;   
@@ -192,7 +200,42 @@
     -fx-border-color: #B52D18;
     -fx-border-width: 0;
     -fx-background-radius: 5;
-    //-fx-background-color: #7FA820;
+    -fx-background-color: limegreen;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.gridborder1 {
+    -fx-padding: 5 22 5 10;   
+    -fx-border-color: #B52D18;
+    -fx-border-width: 2;
+    -fx-background-radius: 5;
+    -fx-background-color: limegreen;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.gridborder2 {
+    -fx-padding: 5 22 5 10;   
+    -fx-border-color: fuchsia;
+    -fx-border-width: 2;
+    -fx-background-radius: 5;
+    -fx-background-color: limegreen;
+    -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
+    -fx-font-size: 11pt;
+    -fx-text-fill: #d8d8d8;
+    -fx-background-insets: 0 0 0 0, 0, 1, 2;
+}
+
+.gridborder3 {
+    -fx-padding: 5 22 5 10;   
+    -fx-border-color: mediumblue;
+    -fx-border-width: 2;
+    -fx-background-radius: 5;
     -fx-background-color: limegreen;
     -fx-font-family: "Segoe UI", Helvetica, Arial, sans-serif;
     -fx-font-size: 11pt;

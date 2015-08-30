@@ -10,7 +10,9 @@ import javafx.util.Duration;
 import javafx.scene.control.ProgressBar;
 
 /**
- *
+ * Controller of the mana bar. The behavior of the bar is specified in the 
+ * constants Capacity, Speed, AutoStopSpeed.
+ * 
  * @author Deas
  */
 public final class ManaController {
@@ -26,25 +28,35 @@ public final class ManaController {
     /** The speed at which mana diminishes when in automaton stop. */
     private static final Integer AutoStopSpeed = 8;
     
+    /** Timeline that controls the bar time-wise. */
     private final Timeline timelineProgress;
-    
+    /** Timeline that controls the main board, this reference is needed to
+     * control stopping the automaton correctly.
+     */
+    private Timeline timelineMain;
+
+    /** The object of the bar. */
     private final ProgressBar pb;
+    /** The current points of mana available. 0 <= i <= Capacity */
     private final IntegerProperty points = new SimpleIntegerProperty(Capacity);
-    
+    /** Is the automaton stopped? */
     private boolean stopped = false;
     public boolean isStopped() { return stopped; }
     
     public ManaController(ProgressBar pb) {
         this.pb = pb;
         timelineProgress = new Timeline();
-        
+        // Bind the property points to the progress of the bar
         pb.progressProperty().bind(points.divide(Capacity*1.0));
                 
         timelineProgress.getKeyFrames().add(new KeyFrame(Duration.ZERO));
         recalibrate(1,1);
     }
     
+    /** Reset the mana bar, set the points to zero. */
     public void reset() {
+        if(timelineProgress != null)
+            stop();
         points.set(0);
         recalibrate(1,0);
     }
@@ -60,12 +72,13 @@ public final class ManaController {
             return true;
         } else return false;
     }
-    
+    /** The mana has run out, start the automaton again. */
     private void emptyMana() {
         if(points.get() != 0 || stopped != true) {
             return;
         }
         
+        // Start the automaton:
         Mechanics.inst.step();
         timelineMain.playFromStart();
         
@@ -124,7 +137,6 @@ public final class ManaController {
         stopped = stopped == false;
         this.timelineMain = timelineMain;
     }
-    private Timeline timelineMain;
     
     /** Recalibrates the timeline so that the progress bar runs with the same
      * speed as before changing the value of points.
@@ -149,5 +161,7 @@ public final class ManaController {
     
     public void stop() {
         timelineProgress.stop();
+        if(timelineMain != null) 
+            timelineMain.stop();
     }
 }
