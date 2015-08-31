@@ -91,7 +91,7 @@ public class FXMLDocumentController implements Initializable {
         obtiznostChoiceBox.setItems(FXCollections.observableArrayList("Snadná", "Střední", "Těžká", "Nightmare"));
         obtiznostChoiceBox.setValue("Střední");
         levelChoiceBox.setItems(FXCollections.observableArrayList("1", "2", "3", "4"));
-        levelChoiceBox.setValue("1");
+        levelChoiceBox.setValue("2");
         
         tabulka.setEditable(true);
 
@@ -212,7 +212,7 @@ public class FXMLDocumentController implements Initializable {
             status = Status.STOPPED;
         } else if (status == Status.STOPPED) {
             manaController.stopAuto(gridController.getTimeline());
-            gridController.resume();
+            //gridController.resume();
             status = Status.RUNNING;
         }     
     }
@@ -279,9 +279,9 @@ public class FXMLDocumentController implements Initializable {
     
     /** The listener to pushing button save after a successful round. */
     public void saveButtonAction(ActionEvent e) {
-        int points = gridController.getDifficulty() * digitalClock.getTotalSeconds();
+        int points = digitalClock.getTotalSeconds();
         StatisticsRecord.newRecord(newRecordField.getText(),tabulka,points, 
-                obtiznostChoiceBox.getSelectionModel().selectedIndexProperty().get(),
+                obtiznostChoiceBox.getSelectionModel().selectedIndexProperty().get() + 1,
                 levelChoiceBox.getSelectionModel().selectedIndexProperty().get() + 1);
         
         newRecord.setVisible(false);

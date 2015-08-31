@@ -83,7 +83,7 @@ public final class ManaController {
         timelineMain.playFromStart();
         
         FXMLDocumentController.status = FXMLDocumentController.Status.RUNNING;
-        stopAuto(null);
+        stopAuto(timelineMain);
     }
     
     /** Cell was clicked - check if mana is sufficient, what to do and does it.
@@ -129,13 +129,16 @@ public final class ManaController {
     public void stopAuto(Timeline timelineMain) {
         double fullness = points.divide(Capacity*1.0).get();
         
+        this.timelineMain = timelineMain;
+
         if(stopped == false) {
             recalibrate(-1,fullness);
         } else {
             recalibrate(1,fullness);
+            Mechanics.inst.step();
+            timelineMain.playFromStart();
         }
         stopped = stopped == false;
-        this.timelineMain = timelineMain;
     }
     
     /** Recalibrates the timeline so that the progress bar runs with the same

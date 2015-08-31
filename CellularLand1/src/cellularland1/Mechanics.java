@@ -17,7 +17,7 @@ public final class Mechanics {
     /** Array of the button nodes that are used to play the game. */
     private ButtonNode[][] buttons;
     /** Level of the game, used to decide which automaton to generate. */
-    private int level = 1;
+    private int level = 2;
     
     /** This size is different from the size of buttons, because I want to 
      * simulate the automaton on a larger grid than just the grid displayed.
@@ -32,9 +32,7 @@ public final class Mechanics {
     
     /** Singleton instance */
     public static Mechanics inst = new Mechanics();
-    private Mechanics() {
-        
-    }
+    private Mechanics() { }
         
     /** Generate new random automaton with the current level and set it as the
      * used automaton.
@@ -138,9 +136,12 @@ public final class Mechanics {
         return Arrays.equals(Sch, automaton.getS()) 
                 && Arrays.equals(Bch, automaton.getB());
     }
-    /** Reset the automaton to its initial position. */
+    /** Reset the automaton to random initial position. */
     public void resetAutomaton() {
-        boolGrid = automaton.initPosition;
+        boolean[][] b = null;
+        while(b == null) 
+            b = AutomatonGenerator.generatePosition(automaton.S, automaton.B, 100);
+        boolGrid = b;
         update();
     }
     

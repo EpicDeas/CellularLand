@@ -3,8 +3,12 @@ package cellularland1;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,7 +18,7 @@ import javafx.collections.FXCollections;
 import javafx.scene.control.TableView;
 
 /**
- * The encapsulation of 
+ * The encapsulation of a record in statistics database.
  *
  * @author Jakub Sosnovec
  */
@@ -69,17 +73,21 @@ public class StatisticsRecord {
         StatisticsRecord.filename = filename;
         
         ArrayList<StatisticsRecord> records = new ArrayList<>();
-        
+        File f = new File(filename);
+        if(!f.exists()){
+            // create new file
+            try(FileWriter fw = new FileWriter(f)) {} catch(IOException e) {}
+        }
         try(BufferedReader br = new BufferedReader(new FileReader(filename))) {
             String line;
             while((line = br.readLine()) != null) {
-                records.add(StatisticsRecord.parse(line));
+                if(!line.equals(""))
+                    records.add(StatisticsRecord.parse(line));
             }
-        } catch (Exception e) {
+            tabulka.setItems(FXCollections.observableArrayList(records));
+        } catch (IOException e) {
             throw new IllegalArgumentException();
-        }
-        
-        tabulka.setItems(FXCollections.observableArrayList(records));
+        } 
     }
     
     private static StatisticsRecord parse(String line) {

@@ -54,7 +54,7 @@ public class AutomatonGenerator {
             // The value of level is used to determine the count of number generated
             for (int j = 0; j < level; j++) {
                 int q = r.nextInt(9);
-                if(q <= 1) q = r.nextInt(9);
+                //if(q <= 1) q = r.nextInt(9);
                 if (r.nextInt(2) == 0 && !S.contains(q)) {
                     S.add(q);
                 } else if (!B.contains(q)) {
@@ -65,16 +65,24 @@ public class AutomatonGenerator {
             }
 
             // Generate random initial position and test its viability.
-            int i = 0;
-            boolean[][] initPosition;
-            CAutomaton a;
-            while (i++ < triesCount) {
-                initPosition = generatePosition();
-                if (test(initPosition, S, B)) {
-                    return new CAutomaton(initPosition, S, B);
-                }
+            boolean[][] initPosition = generatePosition(S,B,triesCount);
+            if(initPosition != null) 
+                return new CAutomaton(initPosition, S, B);
+        }
+    }
+    
+    /** Generate a viable initial position for the automaton given */
+    public static boolean[][] generatePosition(ArrayList<Integer> S, ArrayList<Integer> B, int tries) {
+        int i = 0;
+        boolean[][] initPosition;
+        
+        while (i++ < tries) {
+            initPosition = generatePosition();
+            if (test(initPosition, S, B)) {
+                return initPosition;
             }
         }
+        return null;
     }
     
     /** Test if the generated automaton satisfies the conditions. */

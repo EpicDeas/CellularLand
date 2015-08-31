@@ -16,7 +16,7 @@ public class CAutomaton {
     /** The initial position of the automaton. */
     public final boolean[][] initPosition;
     /** The rules for survival and birth: */
-    private final ArrayList<Integer> S,B;
+    public final ArrayList<Integer> S,B;
     
     /** Numbers assigned to rules are stored here: */
     private final ArrayList<Integer> assignedS, assignedB;
