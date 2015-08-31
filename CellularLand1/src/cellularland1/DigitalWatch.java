@@ -8,13 +8,14 @@ import javafx.util.Duration;
 import javafx.scene.control.Label;
 
 /**
+ * Controller of the clock displayed in the menu.
  *
  * @author Deas
  */
 final class DigitalClock {
     /** Timeline to generate signal over time. */
     final private Timeline timeline;
-    
+    /** The label that is refreshed in constant intervals.*/
     final private Label label;
     
     int minutes;
@@ -67,7 +68,11 @@ final class DigitalClock {
     public boolean isRunning() {
         return timeline.getStatus() == Animation.Status.RUNNING; 
     }
-    
+    public void addSeconds(int s) {
+        for(int i = 0; i < s; i++) {
+            step();
+        }
+    }
     public int getTotalSeconds() {
         return minutes * 60 + seconds;
     }

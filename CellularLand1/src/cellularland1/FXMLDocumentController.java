@@ -270,11 +270,8 @@ public class FXMLDocumentController implements Initializable {
                 tempTimeline.play();
             }
         } else if ((status == Status.RUNNING || status == Status.STOPPED)) {
-            // TODO announce it is wrong and keep going?
-            
-        } else {
-            // dont do anything??
-        }
+            digitalClock.addSeconds(10);
+        } 
     }
     
     /** The listener to pushing button save after a successful round. */

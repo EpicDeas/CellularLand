@@ -36,7 +36,7 @@ public class AutomatonGenerator {
      * the rule usages. This is needed to ensure that no rule is used only in 
      * the beginning and not later on.
      */
-    private static final int minimalRuleUsageAfterSampling = 5;
+    private static final int minimalRuleUsageAfterSampling = 10;
     
     /**
      * Generates a new random cellular automaton with the level specified.

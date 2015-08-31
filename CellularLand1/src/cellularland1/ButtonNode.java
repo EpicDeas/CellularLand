@@ -40,12 +40,12 @@ public class ButtonNode {
         } else {
             String[] indices = button.getId().split(",");
             switch(state) {
-                case HIDDEN_ALIVE: 
-                    state = State.REVEALED_ALIVE;
-                    break;
-                case HIDDEN_DEAD:
-                    state = State.REVEALED_DEAD;
-                    break;
+//                case HIDDEN_ALIVE: 
+//                    state = State.REVEALED_ALIVE;
+//                    break;
+//                case HIDDEN_DEAD:
+//                    state = State.REVEALED_DEAD;
+//                    break;
                 case REVEALED_ALIVE:
                     state = State.REVEALED_DEAD;
                     Mechanics.inst.changed(Integer.parseInt(indices[0]),Integer.parseInt(indices[1]));
@@ -63,7 +63,7 @@ public class ButtonNode {
     private void update() {
         switch(state) {              
             case REVEALED_ALIVE:
-                button.setStyle("-fx-background-color: limegreen");
+                button.setStyle("-fx-background-color: cornflowerblue");
                 break;
             case REVEALED_DEAD:
                 button.setStyle("-fx-background-color: #c1c1c1");
@@ -81,6 +81,8 @@ public class ButtonNode {
         if(state == State.REVEALED_ALIVE) {
             String str = "";
             switch(rule) {
+                case -1: str = "-fx-background-color: cornflowerblue";
+                    break;
                 case 0: str = "-fx-background-color: limegreen;";
                     break;
                 case 1: str = "-fx-background-color: darkorchid;";
@@ -92,7 +94,6 @@ public class ButtonNode {
                 default:
                     throw new IllegalArgumentException("Only 4 colors for rule usage supported!");
             }
-            //button.setStyle(button.getStyle() + ";-fx-border-width: 3;" + str);
             button.setStyle(str);
         }
     }

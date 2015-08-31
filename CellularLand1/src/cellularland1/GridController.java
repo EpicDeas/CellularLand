@@ -118,7 +118,7 @@ public class GridController {
         if(timeline != null) 
             timeline.stop();
         timeline = new Timeline(new KeyFrame(
-                Duration.millis((4-difficulty)*700),
+                Duration.millis((4-difficulty)*500),
                 ae -> {
                     Mechanics.inst.step();
                 }));
