@@ -41,7 +41,6 @@ public final class ManaController {
     private final IntegerProperty points = new SimpleIntegerProperty(Capacity);
     /** Is the automaton stopped? */
     private boolean stopped = false;
-    public boolean isStopped() { return stopped; }
     
     public ManaController(ProgressBar pb) {
         this.pb = pb;
@@ -124,7 +123,7 @@ public final class ManaController {
     }
     
     /** Used when player stops the automaton, reverses the flow of mana with
-     * specified speed.
+     * specified speed. 
      */
     public void stopAuto(Timeline timelineMain) {
         double fullness = points.divide(Capacity*1.0).get();
@@ -162,6 +161,7 @@ public final class ManaController {
         }
     }
     
+    /** Stop the mana bar and the main automaton. Used when the round is over. */
     public void stop() {
         timelineProgress.stop();
         if(timelineMain != null) 

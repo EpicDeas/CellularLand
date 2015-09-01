@@ -75,7 +75,7 @@ public class ButtonNode {
     }
     /**
      * Set the color of the button border according to the rule used.
-     * @param rule The number of the rule used. 0 <= i <= 3
+     * @param rule The number of the rule used. 0 &lt;= i &lt;= 3
      */
     public void seeUsedRule(int rule) {
         if(state == State.REVEALED_ALIVE) {

@@ -32,7 +32,7 @@ import javafx.util.Duration;
  */
 public class FXMLDocumentController implements Initializable {
     
-    /** Main container. */
+    /** Container of cells on the main board. */
     @FXML
     private GridPane grid;
     /** Choice box with selection of difficulty. */
@@ -159,11 +159,11 @@ public class FXMLDocumentController implements Initializable {
         }           
     }
     
-    public static Status status = Status.INITIALIZED;
+    public static Status status = Status.END_OF_TURN;
     
     /** The listener to pushing the button "Spustit hru". */
     public void spustitHruButtonAction(ActionEvent e) {
-        if (status == Status.INITIALIZED || status == Status.END_OF_TURN) {
+        if (status == Status.END_OF_TURN) {
             score.setText("0");
             digitalClock.reset();
             digitalClock.start();
@@ -228,7 +228,8 @@ public class FXMLDocumentController implements Initializable {
         }
     }
     
-    /** The listener to pushing the button "Hotovo!. */
+    /** The listener to pushing the button "Hotovo!. Check the correctness
+     of the given transition function and proceedes accordingly.*/
     public void hotovoButtonAction(ActionEvent e) {       
         if((status == Status.RUNNING || status == Status.STOPPED) && Mechanics.inst.isCorrect(S.getText(),B.getText())) {
             if(status == Status.STOPPED) 
@@ -256,7 +257,7 @@ public class FXMLDocumentController implements Initializable {
                 
                 status = Status.BETWEEN;
                 success.setVisible(true);
-
+                // Wait one second and then generate a new automaton.
                 Timeline tempTimeline = new Timeline(new KeyFrame(
                         Duration.seconds(2), (ActionEvent event) -> {
                             digitalClock.resume();
@@ -277,7 +278,8 @@ public class FXMLDocumentController implements Initializable {
         } 
     }
     
-    /** The listener to pushing button save after a successful round. */
+    /** The listener to pushing button save after a successful round. Writes
+     the name to statistics and closes the window.*/
     public void saveButtonAction(ActionEvent e) {
         int points = digitalClock.getTotalSeconds();
         StatisticsRecord.newRecord(newRecordField.getText(),tabulka,points, 
@@ -291,7 +293,8 @@ public class FXMLDocumentController implements Initializable {
         
         status = Status.END_OF_TURN;
     }
-    /** The listener to pushing the button don't save after a successful round. */
+    /** The listener to pushing the button don't save after a successful round. 
+     Closes the window.*/
     public void dontSaveButtonAction(ActionEvent e) {
         newRecord.setVisible(false);
         saveButton.setVisible(false);
@@ -301,7 +304,24 @@ public class FXMLDocumentController implements Initializable {
         status = Status.END_OF_TURN;
     }
     
+    /** Enumeration of status of GUI. Needed to correctly interpret 
+     * events from active controls.
+     */
     public enum Status {
-        RUNNING, END_OF_TURN, STOPPED, INITIALIZED, WAITING_FOR_STATISTIC, BETWEEN;
+        /** A cellular automaton is running in the main board. */
+        RUNNING, 
+        /** A round has ended, automaton and watch is stopped. Waiting for action. */
+        END_OF_TURN, 
+        /** The automaton on the main board is generated and running, but 
+         * currently it is stopped. 
+         */
+        STOPPED, 
+        /** A round has ended successfully and the window with new statistics 
+         record is visible. Waiting for the user to input his name or click cancel.*/
+        WAITING_FOR_STATISTIC, 
+        /** Automaton was correctly guessed, waiting one second for another 
+         * automaton to generate and run.
+         */
+        BETWEEN;
     }
 }

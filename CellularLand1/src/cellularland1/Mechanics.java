@@ -101,7 +101,7 @@ public final class Mechanics {
     
     /** Update the status of button nodes AND set the border according to the
      * rule used.
-     * @param ruleGrid Number of the rule. -1 <= i <= 4
+     * @param ruleGrid Number of the rule. -1 &lt;= i &lt;= 4
      */
     public void update(int[][] ruleGrid) {
         for(int i = offset; i < offset + buttons.length; i++) {

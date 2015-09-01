@@ -105,7 +105,7 @@ public class GridController {
         }
         return result;
     }
-    
+    /** Gets the size of the main visible board. */
     public int getSize() {
         return size;
     }
@@ -146,7 +146,7 @@ public class GridController {
     public void setDifficulty(int difficulty) {
         this.difficulty = difficulty;
     }
-    
+    /** Is the automaton currently running */
     public boolean isRunning() {
         return timeline.getStatus() == Animation.Status.RUNNING;
     }
