@@ -178,6 +178,9 @@ public class FXMLDocumentController implements Initializable {
             
             levelChoiceBox.setDisable(true);
             obtiznostChoiceBox.setDisable(true);
+        } else if (status == Status.RUNNING || status == Status.STOPPED) {
+            konecKolaButtonAction(null);
+            spustitHruButtonAction(null);
         }
     }
         
