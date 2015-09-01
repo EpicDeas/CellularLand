@@ -98,28 +98,18 @@ public final class Mechanics {
         boolGrid = newBoolGrid;
         update(ruleGrid);
     }
-    /** Update the status of button nodes according to the new position. */
-    public void update() {
-        for(int i = offset; i < offset + buttons.length; i++) {
-            for(int j = offset; j < offset + buttons.length; j++) {
-                if(boolGrid[i][j]) {
-                    buttons[i-offset][j-offset].birth();
-                } else {
-                    buttons[i-offset][j-offset].die();
-                }
-            }
-        }
-    }
+    
     /** Update the status of button nodes AND set the border according to the
      * rule used.
-     * @param ruleGrid 
+     * @param ruleGrid Number of the rule. -1 <= i <= 4
      */
     public void update(int[][] ruleGrid) {
         for(int i = offset; i < offset + buttons.length; i++) {
             for(int j = offset; j < offset + buttons.length; j++) {
                 if(boolGrid[i][j]) {
                     buttons[i-offset][j-offset].birth();
-                    buttons[i-offset][j-offset].seeUsedRule(ruleGrid[i][j]);
+                    if(ruleGrid != null)
+                        buttons[i-offset][j-offset].seeUsedRule(ruleGrid[i][j]);
                 } else {
                     buttons[i-offset][j-offset].die();
                 }
@@ -142,7 +132,7 @@ public final class Mechanics {
         while(b == null) 
             b = AutomatonGenerator.generatePosition(automaton.S, automaton.B, 100);
         boolGrid = b;
-        update();
+        update(null);
     }
     
     public void changed(int x, int y) {

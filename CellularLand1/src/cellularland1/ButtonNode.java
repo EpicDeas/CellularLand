@@ -40,12 +40,12 @@ public class ButtonNode {
         } else {
             String[] indices = button.getId().split(",");
             switch(state) {
-//                case HIDDEN_ALIVE: 
-//                    state = State.REVEALED_ALIVE;
-//                    break;
-//                case HIDDEN_DEAD:
-//                    state = State.REVEALED_DEAD;
-//                    break;
+                case HIDDEN_ALIVE: 
+                    state = State.REVEALED_ALIVE;
+                    break;
+                case HIDDEN_DEAD:
+                    state = State.REVEALED_DEAD;
+                    break;
                 case REVEALED_ALIVE:
                     state = State.REVEALED_DEAD;
                     Mechanics.inst.changed(Integer.parseInt(indices[0]),Integer.parseInt(indices[1]));

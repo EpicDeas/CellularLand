@@ -3,10 +3,12 @@ package cellularland1;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Platform;
 
 /**
+ * Loads the cellular automaton from specified text file, parser.
  *
  * @author Deas
  */
@@ -54,7 +56,7 @@ public class Loader {
             }
             return new CAutomaton(boolGrid,S,B);
             
-        } catch (Exception e) {
+        } catch (IOException e) {
             System.out.println("I/O error.");
             Platform.exit();
             return null;

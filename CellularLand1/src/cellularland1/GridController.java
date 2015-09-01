@@ -90,7 +90,7 @@ public class GridController {
         }
     }  
     
-    /** The getter of grid. Currently is public. */
+    /** The getter of grid. */
     public GridPane getGrid() { return grid; }
     
     /** Gets the node with specified coordinates. */
@@ -123,7 +123,7 @@ public class GridController {
                     Mechanics.inst.step();
                 }));
         
-        Mechanics.inst.update();
+        Mechanics.inst.update(null);
         timeline.setCycleCount(Animation.INDEFINITE);
         timeline.playFromStart();
     }
