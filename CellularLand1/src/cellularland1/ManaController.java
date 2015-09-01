@@ -78,7 +78,7 @@ public final class ManaController {
         }
         
         // Start the automaton:
-        Mechanics.inst.step();
+        //Mechanics.inst.step();
         timelineMain.playFromStart();
         
         FXMLDocumentController.status = FXMLDocumentController.Status.RUNNING;
