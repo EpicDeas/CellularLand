@@ -27,5 +27,6 @@ public class NapovedaText {
             + "Výběr levelu určuje složitost přechodové funkce, číslo levelu je rovno počtu čísel v zapsání přechodové funkce ve formátu S/B. "
             + "Například Game of Life je automat levelu 3.\n\n"
             + "Živé buňky automatu mají různé barvy podle pravidla, které bylo použito k jejich přežití nebo ožití.\n\n"
-            + "Jedno kolo hry se skládá z rozpoznání deseti automatů, poté Vám bude nabídnut zápis do statistiky s Vaším výkonem.";
+            + "Jedno kolo hry se skládá z rozpoznání deseti automatů, poté Vám bude nabídnut zápis do statistiky s Vaším výkonem.\n\n"
+            + "Pro přesnější instrukce s příklady viz Uživelskou příručku.";
 }
